@@ -27,7 +27,7 @@
 
 	<footer>
 		<p>
-			<a href="https://github.com/TechplexEngineer/HeatPi">HeatPi</a> - Home Heating Control System
+			<a href="https://github.com/TechplexEngineer/BionicPackages">BionicPackages</a> - Package Tracking System
 		</p>
 	</footer>
 </div>

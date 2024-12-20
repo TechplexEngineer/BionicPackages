@@ -35,9 +35,6 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
 		"@sveltejs/adapter-node": "^5.2.9",
-		"@types/i2c-bus": "^5.1.2",
-		"bootstrap": "^5.3.3",
-		"dbus-final": "github:RevolutionPi/dbus-final",
-		"i2c-bus": "^5.2.3"
+		"bootstrap": "^5.3.3"
 	}
 }

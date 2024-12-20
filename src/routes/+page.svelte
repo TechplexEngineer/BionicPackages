@@ -24,31 +24,9 @@
 
 <div class="container">
 	<div class="d-flex justify-content-between">
-		<h1>Home Heating Control</h1>
-		<small>
-			<button type="button" class="btn btn-outline-secondary">
-				Last refreshed: {new Date(lastRefreshed).toLocaleString('en-US', {
-					hour: 'numeric',
-					minute: 'numeric',
-					second: 'numeric',
-					hour12: true,
-					month: '2-digit',
-					day: '2-digit',
-					year: '2-digit'
-				})}
-			</button>
-		</small>
-		<div>
-			<button type="button" class="btn btn-outline-primary">
-				Top <span class="badge text-bg-secondary">{data.temps.top}</span>
-			</button>
-			<button type="button" class="btn btn-outline-primary">
-				Mid <span class="badge text-bg-secondary">{data.temps.mid}</span>
-			</button>
-			<button type="button" class="btn btn-outline-primary">
-				Bot <span class="badge text-bg-secondary">{data.temps.bot}</span>
-			</button>
-		</div>
+		<h1>Incomming Package Management</h1>
+		
+		
 	</div>
 
 	{#if data.errors && data.errors.length > 0}
