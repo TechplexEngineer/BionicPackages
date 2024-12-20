@@ -1,7 +1,12 @@
+import { getDb } from "./server/db";
 
 
-export const startup = async (): Promise<App.Locals> => {
+export const startup = async (platform: App.Platform): Promise<Omit<App.Locals, 'user'|'session'>> => {
     console.log("startup");
-    return {};
+
+    const db = await getDb(platform);
+    return {
+        db: db
+    };
 }
 
