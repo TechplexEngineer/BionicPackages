@@ -15,7 +15,7 @@ if (!clientSecret) {
 export const GET: RequestHandler = async ({request}) => {
     console.log("oauth/redirect/+server.ts GET");
     console.log("url", request.url);
-    console.log("data", await request.json());
+    // console.log("data", await request.json());
     const url = new URL(request.url);
     const code = url.searchParams.get('code');
     console.log("code", code);

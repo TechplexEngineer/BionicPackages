@@ -40,7 +40,7 @@
         {#if !createUser}
             <button type="submit" class="btn btn-primary">Sign in</button>
             <div class="d-flex justify-content-between mt-3">
-                <a class="nav-link" href="">Forgot Password?</a>
+                <!-- <a class="nav-link" href="/">Forgot Password?</a> -->
                 <button class="nav-link" onclick={(event) => {event.preventDefault(); createUser = true}}>Create Account</button>
             </div>
         {:else}
