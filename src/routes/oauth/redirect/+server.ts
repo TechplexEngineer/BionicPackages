@@ -1,12 +1,12 @@
 import { getSlackAPIURL } from '$lib/slack';
 import type { RequestHandler } from './$types';
 
-export const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
+const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 if (!clientId) {
     throw new Error("No Slack oauth client id set");
 }
 
-export const clientSecret = import.meta.env.VITE_SLACK_CLIENT_SECRET;
+const clientSecret = import.meta.env.VITE_SLACK_CLIENT_SECRET;
 if (!clientSecret) {
     throw new Error("No Slack oauth client id set");
 }
