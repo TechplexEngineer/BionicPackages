@@ -7,9 +7,14 @@ export default defineConfig({
 		exclude: [
 			"fsevents",
 			"@node-rs/argon2",
-			"@node-rs/bcrypt",
-			"@node-rs/argon2-wasm32-wasi"
+			"@node-rs/bcrypt", "@node-rs/argon2-wasm32-wasi"
 		]
+	},
+	build: {
+		rollupOptions: {
+			external: ["@node-rs/argon2",
+			"@node-rs/bcrypt", "@node-rs/argon2-wasm32-wasi"]
+		}
 	},
 
 	test: {

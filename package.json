@@ -39,8 +39,7 @@
 	},
 	"dependencies": {
 		"@libsql/client": "^0.9.0",
-		"@node-rs/argon2": "^1.1.0",
-		"@node-rs/argon2-wasm32-wasi": "^2.0.2",
+		"@noble/hashes": "^1.6.1",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"@popperjs/core": "^2.11.8",
