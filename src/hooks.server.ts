@@ -3,6 +3,7 @@ import * as auth from '$lib/server/auth.js';
 import { building } from '$app/environment';
 import { startup } from '$lib/startup';
 import type { Handle } from '@sveltejs/kit';
+import { getDb } from '$lib/server/db';
 
 // Cache the locals so we don't get new ones on every request
 let appLocalsCache: Promise<Omit<App.Locals, 'user'|'session'>> | null = null;
@@ -15,7 +16,7 @@ const originalHandle: Handle = async ({ event, resolve }) => {
 		} else if (!appLocalsCache) {
 			appLocalsCache = startup(event.platform!);
 		}
-		event.locals = await appLocalsCache;
+		event.locals = {...event.locals, ...await appLocalsCache};
 	}
 
 	const response = await resolve(event);
@@ -30,7 +31,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const { session, user } = await auth.validateSessionToken(sessionToken);
+	const { session, user } = await auth.validateSessionToken(await getDb(event.platform!), sessionToken);
 	if (session) {
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 	} else {
