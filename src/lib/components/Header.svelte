@@ -39,6 +39,6 @@
 				{/each}
 			</ul>
 		</div>
-		<LoginRegister/>
+		<!-- <LoginRegister/> -->
 	</div>
 </nav>
