@@ -5,12 +5,9 @@ export const load = (async ({ locals }) => {
     
 
     return {
-        zones: [],
-        temps: {
-            top: 1,
-            mid: 1,
-            bot: 1,
-        },
+        packages: [
+            {trackingNumber:"12345", name: "Test", status: "Delivered", estDelivery: "", trackingUrl: "", latestUpdate: "", carrier: "UPS"},
+        ],
         errors: [],
     };
 }) satisfies PageServerLoad;

@@ -16,6 +16,25 @@ declare global {
 			}
 		}
 	}
+
+	interface ImportMetaEnv {
+        // VITE_ONSHAPE_OAUTH_CLIENT_ID?: string;
+        // VITE_ONSHAPE_OAUTH_SECRET?: string;
+
+        // VITE_ONSHAPE_OAUTH_CLIENT_ID?: string;
+        // VITE_ONSHAPE_OAUTH_CLIENT_SECRET?: string;
+        // VITE_ONSHAPE_OAUTH_REDIRECT_URI?: string;
+
+        // // VITE_TRELLO_KEY?: never;
+        // VITE_TRELLO_TOKEN?: never;
+
+        // VITE_TRELLO_KEY?: string;
+        // VITE_TRELLO_SECRET?: string;
+        // VITE_TRELLO_OAUTH_REDIRECT_URI?: string;
+
+		VITE_SLACK_CLIENT_ID?: string;
+		VITE_SLACK_CLIENT_SECRET?: string;
+    }
 }
 
 export {};
