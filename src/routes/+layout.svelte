@@ -25,7 +25,7 @@
 		{@render children()}
 	</main>
 
-	<footer>
+	<footer class="sticky-footer">
 		<p>
 			<a href="https://github.com/TechplexEngineer/BionicPackages">BionicPackages</a> - Package Tracking System
 		</p>
