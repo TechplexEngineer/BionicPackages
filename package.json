@@ -1,5 +1,5 @@
 {
-	"name": "heatpi",
+	"name": "bionicpackages",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
@@ -43,7 +43,7 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"@popperjs/core": "^2.11.8",
-		"@sveltejs/adapter-node": "^5.2.9",
+		"@sveltejs/adapter-cloudflare": "^4.9.0",
 		"bootstrap": "^5.3.3",
 		"drizzle-orm": "^0.33.0"
 	}
