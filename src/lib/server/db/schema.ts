@@ -44,7 +44,15 @@ export type slackConData = {
 
 export const slackConnections = sqliteTable('slackcon', {
 	id: integer('id').primaryKey(),
-	teamId: text('teamId'),
+	// teamId: text('teamId'), // make this a virtual (generated) column
 	data: text('data', { mode: 'json' }).$type<slackConData>()
 });
 export type SlackConnections = typeof slackConnections.$inferSelect;
+
+
+export const packages = sqliteTable('packages', {
+	id: integer('id').primaryKey(),
+	trackingNumber: text('trackingNumber'),
+	data: text('data', { mode: 'json' }).$type<slackConData>()
+});
+export type Packages = typeof slackConnections.$inferSelect;
