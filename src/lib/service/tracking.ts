@@ -8,8 +8,8 @@ export class TrackingService {
     constructor(private db: Database, private tennant: string) { }
 
     // This method should be called whenever a tracking event is received from the carrier
-    trackEvent(trackingNumber: string, event: { status: string, estimatedDelivery: string, trackingUrl: string, latestUpdate: string }) {
-        return this.db.update(packagesTable).set({
+    async trackEvent(trackingNumber: string, event: { status: string, estimatedDelivery: string, trackingUrl: string, latestUpdate: string }) {
+        await this.db.update(packagesTable).set({
             tracking: event
         }).where(and(
             eq(packagesTable.trackingNumber, trackingNumber),
