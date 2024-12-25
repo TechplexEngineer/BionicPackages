@@ -1,5 +1,6 @@
 import type { Database } from "$lib/server/db";
-import { packages } from "$lib/server/db/schema";
+import { packagesTable } from "$lib/server/db/schema";
+import { eq, lt, gte, ne, and } from 'drizzle-orm';
 
 
 export class TrackingService {
@@ -11,14 +12,16 @@ export class TrackingService {
 
     }
 
-    addPackage(props: { name: string, trackingNumber: string, carrier: string }) {
-        this.db.insert(packages).values({
-            // name: props.name,
+    async addPackage(props: { name: string, trackingNumber: string, carrier: string }) {
+        await this.db.insert(packagesTable).values({
+            name: props.name,
             trackingNumber: props.trackingNumber,
-            // carrier: props.carrier,
-            // tennant: this.tennant
+            carrier: props.carrier,
+            tennant: this.tennant
         });
     }
 
-    listPackages() { }
+    listPackages() {
+        return this.db.select().from(packagesTable).where(eq(packagesTable.tennant, this.tennant));
+    }
 }

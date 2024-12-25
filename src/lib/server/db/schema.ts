@@ -49,10 +49,16 @@ export const slackConnections = sqliteTable('slackcon', {
 });
 export type SlackConnections = typeof slackConnections.$inferSelect;
 
+export type trackingData = {
+	status: string, estimatedDelivery: string, trackingUrl: string, latestUpdate: string
+};
 
-export const packages = sqliteTable('packages', {
+export const packagesTable = sqliteTable('packages', {
 	id: integer('id').primaryKey(),
 	trackingNumber: text('trackingNumber'),
-	data: text('data', { mode: 'json' }).$type<slackConData>()
+	name: text('name'),
+	carrier: text('carrier'),
+	tennant: text('tennant'),
+	tracking: text('tracking', { mode: 'json' }).$type<trackingData>()
 });
 export type Packages = typeof slackConnections.$inferSelect;
