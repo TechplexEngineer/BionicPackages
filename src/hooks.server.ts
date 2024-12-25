@@ -6,18 +6,19 @@ import type { Handle } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
 
 // Cache the locals so we don't get new ones on every request
-let appLocalsCache: Promise<Omit<App.Locals, 'user'|'session'>> | null = null;
+let appLocalsCache: Promise<Omit<App.Locals, 'user' | 'session'>> | null = null;
 
 
-const originalHandle: Handle = async ({ event, resolve }) => {
-	if (appLocalsCache !== null) {
+export const originalHandle: Handle = async ({ event, resolve }) => {
+
+	if (appLocalsCache == null) {
 		if (building) {
 			console.log('Building, skipping hardware startup');
 		} else if (!appLocalsCache) {
 			appLocalsCache = startup(event.platform!);
 		}
-		event.locals = {...event.locals, ...await appLocalsCache};
 	}
+	event.locals = { ...event.locals, ...await appLocalsCache };
 
 	const response = await resolve(event);
 	return response;
