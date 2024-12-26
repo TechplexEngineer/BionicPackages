@@ -53,7 +53,7 @@ export type trackingData = {
 	status: string,
 	estimatedDelivery: Date,
 	trackingUrl: string,
-	latestUpdate: Date
+	latestUpdate: string
 };
 
 export const packagesTable = sqliteTable('packages', {

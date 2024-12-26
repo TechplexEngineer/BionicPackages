@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ locals, request }) => {
         status: r.result.status,
         estimatedDelivery: r.result.est_delivery_date,
         trackingUrl: r.result.public_url,
-        latestUpdate: r.result.tracking_details[0].datetime
+        latestUpdate: r.result.tracking_details[0].message
     })
 
     return new Response("");

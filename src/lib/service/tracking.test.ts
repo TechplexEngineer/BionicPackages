@@ -7,7 +7,6 @@ import * as fs from 'fs/promises';
 import { packagesTable } from '$lib/server/db/schema';
 import { eq, lt, gte, ne, and } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/libsql/migrator';
-import config from '../../../drizzle.config';
 
 describe('TrackingService', () => {
     let trackingService: TrackingService;
@@ -20,8 +19,8 @@ describe('TrackingService', () => {
         mockDb = drizzle_libsql(client);
         await migrate(mockDb, {
             migrationsFolder: "./drizzle",
-            migrationsSchema: config.migrations?.schema,
-            migrationsTable: config.migrations?.table
+            migrationsSchema: './src/lib/server/db/schema.ts',
+            migrationsTable: "__drizzle_migrations",
 
         });
         trackingService = new TrackingService(mockDb, tennant);
