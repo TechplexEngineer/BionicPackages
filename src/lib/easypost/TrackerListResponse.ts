@@ -1,4 +1,4 @@
-import {Tracker} from "@/easypost/TrackerCreateResponse";
+import { type Tracker } from "./TrackerCreateResponse";
 
 export interface EasyPostTrackerListResponse {
     trackers: Tracker[];

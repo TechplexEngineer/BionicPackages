@@ -1,13 +1,14 @@
 import { slackConnections, type slackConData } from '$lib/server/db/schema';
 import { getSlackAPIURL } from '$lib/slack';
 import type { RequestHandler } from './$types';
+import { SLACK_CLIENT_ID, SLACK_CLIENT_SECRET } from '$env/static/private';
 
-const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
+const clientId = SLACK_CLIENT_ID;
 if (!clientId) {
     throw new Error("No Slack oauth client id set");
 }
 
-const clientSecret = import.meta.env.VITE_SLACK_CLIENT_SECRET;
+const clientSecret = SLACK_CLIENT_SECRET;
 if (!clientSecret) {
     throw new Error("No Slack oauth client id set");
 }

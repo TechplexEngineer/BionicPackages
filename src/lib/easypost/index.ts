@@ -1,12 +1,11 @@
-import {EasyPostErrorResponse, EasyPostTrackerCreateResponse} from "@/easypost/TrackerCreateResponse";
-import {EasyPostTrackerListResponse} from "@/easypost/TrackerListResponse";
-
+import type { EasyPostErrorResponse, EasyPostTrackerCreateResponse } from "./TrackerCreateResponse";
+import type { EasyPostTrackerListResponse } from "./TrackerListResponse";
 
 class EasyPostTracker {
     private readonly apiKey: string;
     private trackerEndpoint = "https://api.easypost.com/v2/trackers";
 
-    constructor(easyPostApiToken) {
+    constructor(easyPostApiToken: string) {
         this.apiKey = easyPostApiToken;
     }
 
@@ -44,10 +43,8 @@ class EasyPostTracker {
 
 export class EasyPost {
     public Tracker: EasyPostTracker;
-    private apiKey: string;
 
-    constructor(easyPostApiToken: string) {
-        this.apiKey = easyPostApiToken
+    constructor(private easyPostApiToken: string) {
         this.Tracker = new EasyPostTracker(easyPostApiToken)
     }
 }

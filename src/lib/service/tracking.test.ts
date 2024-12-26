@@ -50,6 +50,10 @@ describe('TrackingService', () => {
         expect(res).toHaveLength(1);
     });
 
+    it('should create a tracker with easypost for each package', async () => {
+
+    });
+
     it('should list packages', async () => {
         // arrange
         const packageProps = { name: 'Test Package', trackingNumber: '123456', carrier: 'Test Carrier' };

@@ -50,7 +50,10 @@ export const slackConnections = sqliteTable('slackcon', {
 export type SlackConnections = typeof slackConnections.$inferSelect;
 
 export type trackingData = {
-	status: string, estimatedDelivery: string, trackingUrl: string, latestUpdate: string
+	status: string,
+	estimatedDelivery: Date,
+	trackingUrl: string,
+	latestUpdate: Date
 };
 
 export const packagesTable = sqliteTable('packages', {
