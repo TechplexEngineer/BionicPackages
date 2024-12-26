@@ -5,8 +5,8 @@ import type { RequestHandler } from './$types';
 export const GET: RequestHandler = async ({ locals, request }) => {
     const r = await request.json<EasyPostWebhook>();
 
-    const tennant = "";
-    const svc = new TrackingService(locals.db, tennant);
+    const tenant = "";
+    const svc = new TrackingService(locals.db, tenant);
     await svc.trackEvent(r.result.tracking_code, {
         status: r.result.status,
         estimatedDelivery: r.result.est_delivery_date,

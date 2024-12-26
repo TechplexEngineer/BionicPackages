@@ -37,7 +37,7 @@ export type slackConData = {
 		channel: string
 		channel_id: string
 		configuration_url: string
-		url: string
+		url: string //https://hooks.slack.com/services/<teamid>/<service>/<unique>
 	}
 }
 
@@ -61,7 +61,7 @@ export const packagesTable = sqliteTable('packages', {
 	trackingNumber: text('trackingNumber'),
 	name: text('name'),
 	carrier: text('carrier'),
-	tennant: text('tennant'),
+	tenant: text('tenant'),
 	tracking: text('tracking', { mode: 'json' }).$type<trackingData>()
 });
 export type Packages = typeof slackConnections.$inferSelect;

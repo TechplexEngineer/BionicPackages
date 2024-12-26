@@ -4,7 +4,7 @@ import { TrackingService } from '$lib/service/tracking';
 
 export const load = (async ({ locals }) => {
 
-    const svc = new TrackingService(locals.db, "tennant");
+    const svc = new TrackingService(locals.db, "tenant");
 
     return {
         packages: await svc.listPackages(),
@@ -26,7 +26,7 @@ export const actions: Actions = {
             return fail(400, { message: "Missing required fields" });
         }
 
-        const svc = new TrackingService(locals.db, "tennant");
+        const svc = new TrackingService(locals.db, "tenant");
         svc.addPackage({ name: name!, trackingNumber: tracking!, carrier: carrier! });
     },
 };

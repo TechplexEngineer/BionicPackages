@@ -12,7 +12,7 @@ describe('TrackingService', () => {
     let trackingService: TrackingService;
     let mockDb: LibSQLDatabase<Record<string, never>>
     const mockDbPath = 'test.db';
-    const tennant = 'testTenant';
+    const tenant = 'testTenant';
 
     beforeEach(async () => {
         const client = createClient({ url: `file:${mockDbPath}` });
@@ -23,7 +23,7 @@ describe('TrackingService', () => {
             migrationsTable: "__drizzle_migrations",
 
         });
-        trackingService = new TrackingService(mockDb, tennant);
+        trackingService = new TrackingService(mockDb, tenant);
     });
     afterEach(async () => {
         vi.restoreAllMocks();
@@ -43,7 +43,7 @@ describe('TrackingService', () => {
         const res = await mockDb.select().from(packagesTable).where(and(
             eq(packagesTable.name, packageProps.name),
             eq(packagesTable.trackingNumber, packageProps.trackingNumber),
-            eq(packagesTable.tennant, tennant),
+            eq(packagesTable.tenant, tenant),
             eq(packagesTable.carrier, packageProps.carrier)
         ))
         expect(res).toHaveLength(1);

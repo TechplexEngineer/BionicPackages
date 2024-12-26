@@ -12,7 +12,8 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"db:push": "wrangler d1 migrations apply bionic_packages_db",
+		"w:push": "wrangler d1 migrations apply bionic_packages_db --remote",
+		"w:logs": "wrangler pages deployment tail --project-name bionicpackages",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio"
 	},

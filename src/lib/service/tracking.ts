@@ -1,16 +1,23 @@
 import { EasyPost } from "$lib/easypost";
 import type { Database } from "$lib/server/db";
-import { packagesTable } from "$lib/server/db/schema";
+import { packagesTable, slackConnections } from "$lib/server/db/schema";
 import { eq, lt, gte, ne, and } from 'drizzle-orm';
 import { EASYPOST_API_KEY } from '$env/static/private';
 
+export type TrackingEvent = { 
+    trackingNumber: string,
+    status: string,
+    estimatedDelivery: Date,
+    trackingUrl: string,
+    latestUpdate: string
+}
 
 export class TrackingService {
 
-    constructor(private db: Database, private tennant: string) { }
+    constructor(private db: Database, private tenant: string) { }
 
     // This method should be called whenever a tracking event is received from the carrier
-    async trackEvent(trackingNumber: string, event: { status: string, estimatedDelivery: Date, trackingUrl: string, latestUpdate: string }) {
+    async trackEvent(trackingNumber: string, event: Omit<TrackingEvent, 'trackingNumber'>) {
         await this.db.update(packagesTable).set({
             tracking: {
                 status: event.status,
@@ -20,7 +27,7 @@ export class TrackingService {
             }
         }).where(and(
             eq(packagesTable.trackingNumber, trackingNumber),
-            eq(packagesTable.tennant, this.tennant)
+            eq(packagesTable.tenant, this.tenant)
         ));
     }
 
@@ -33,21 +40,99 @@ export class TrackingService {
             throw new Error(tracker.error?.message);
         }
 
+        // store the update
         await this.db.insert(packagesTable).values({
             name: props.name,
             trackingNumber: props.trackingNumber,
             carrier: props.carrier,
-            tennant: this.tennant,
+            tenant: this.tenant,
             tracking: {
                 status: tracker.status,
                 estimatedDelivery: tracker.est_delivery_date,
                 trackingUrl: tracker.public_url,
-                latestUpdate: tracker.tracking_details[0].datetime,
+                latestUpdate: tracker.tracking_details[0].message,
             }
         });
+
+        // check if the webhook is redundant
+
+
+        // Send an update to slack
+        const tenantSlackConnection = await this.db.select().from(slackConnections).where(eq('tenant', this.tenant)).limit(1);
+        if (tenantSlackConnection.length > 0) {
+            const slackMessage = formatTrackingSlackMessage({
+                name: props.name,
+                trackingNumber: props.trackingNumber,
+                status: tracker.status,
+                estimatedDelivery: tracker.est_delivery_date,
+                trackingUrl: tracker.public_url,
+                latestUpdate: tracker.tracking_details[0].message
+            });
+
+            await fetch(tenantSlackConnection[0].webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: slackMessage })
+            });
+        }
+        
+        // find slack connection for tenant
+        // send message to slack
     }
 
     listPackages() {
-        return this.db.select().from(packagesTable).where(eq(packagesTable.tennant, this.tennant));
+        return this.db.select().from(packagesTable).where(eq(packagesTable.tenant, this.tenant));
     }
 }
+
+export const formatTrackingSlackMessage = (t: TrackingEvent & {name: string}) => {
+    let deliveryDate = "";
+    if (deliveryDate) {
+        deliveryDate = new Date(t.estimatedDelivery).toLocaleString('en-us', {
+            year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"
+        })
+    } else {
+        deliveryDate = "Unknown"
+    }
+    const blocks = [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `*${t.name}*\n ${genStatusIndicator(t.status)} ${t.status}\n Estimated Delivery: ${deliveryDate}\n Last Update: ${t.latestUpdate}`
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": `Track`, // ${t.carrier} ${t.tracking}
+                            "emoji": true
+                        },
+                        "url": t.trackingUrl
+                    }
+                ]
+            }
+        ]
+    
+
+    return JSON.stringify(blocks);
+}
+
+const genStatusIndicator = (status: string): string => {
+    switch(status) {
+        case "pre_transit":
+            return `:large_green_circle::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+        case "in_transit":
+            return `:large_green_circle::heavy_minus_sign::truck::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+        case "out_for_delivery":
+            return `:large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::truck::heavy_minus_sign::radio_button:`;
+        case "delivered":
+            return `:large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::package:`;
+        default:
+            return `:radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+    }
+};
