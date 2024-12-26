@@ -12,7 +12,7 @@ binding = "bionic_packages_db"
 database_name = "bionic_packages_db"
 migrations_dir = "drizzle"
 
-[[env.dev.d1_databases]]
+[[d1_databases]]
 database_id = "067ca4de-a665-458a-809f-ae4fc171c0d5"
 binding = "bionic_packages_db"
 database_name = "bionic_packages_db"
