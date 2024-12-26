@@ -9,14 +9,16 @@ export const startup = async (platform: App.Platform): Promise<Omit<App.Locals, 
         // use d1
         console.log("Migrations need to be applied by wrangler manually");
     } else {
-        const { migrate: migrate_libsql } = await import('drizzle-orm/libsql/migrator');
-        // use libsql
-        await migrate_libsql(db, {
-            migrationsFolder: "./drizzle",
-            migrationsSchema: './src/lib/server/db/schema.ts',
-            migrationsTable: "__drizzle_migrations",
+        if(import.meta.env.DEV) {
+            const { migrate: migrate_libsql } = await import('drizzle-orm/libsql/migrator');
+            // use libsql
+            await migrate_libsql(db, {
+                migrationsFolder: "./drizzle",
+                migrationsSchema: './src/lib/server/db/schema.ts',
+                migrationsTable: "__drizzle_migrations",
 
-        });
+            });
+        }
     }
     console.log("Migrations Complete");
 
