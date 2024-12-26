@@ -73,7 +73,7 @@ describe('TrackingService', () => {
         const trackingNumber = '123456';
         const event = {
             status: 'In Transit',
-            estimatedDelivery: '2023-10-10',
+            estimatedDelivery: new Date('2023-10-10'),
             trackingUrl: 'http://example.com/track/123456',
             latestUpdate: 'Package has left the facility'
         };
