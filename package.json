@@ -6,15 +6,12 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"w:push": "wrangler d1 migrations apply bionic_packages_db --remote",
 		"w:logs": "wrangler pages deployment tail --project-name bionicpackages",
-		"db:migrate": "drizzle-kit migrate",
+		"db:gen": "drizzle-kit generate",
+		"db:migrate": "wrangler d1 migrations apply bionic_packages_db --local",
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
