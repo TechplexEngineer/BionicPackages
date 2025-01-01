@@ -6,7 +6,7 @@ export const startup = async (platform: App.Platform): Promise<Omit<App.Locals, 
 
     const db = await getDb(platform);
 
-    console.log("REMINDER: Migrations need to be applied by wrangler manually");
+    console.log("REMINDER: Migrations need to be applied by wrangler manually [Local: npm run db:migrate][Remote: npm run db:push]");
     // if (!import.meta.env.DEV) {
 
     // } else {

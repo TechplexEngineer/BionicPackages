@@ -57,30 +57,32 @@ export class TrackingService {
         // check if the webhook is redundant
 
 
-        // Send an update to slack
-        const tenantSlackConnection = await this.db.select().from(tenantTable).where(eq(tenantTable.teamId, this.tenant)).limit(1);
-        if (tenantSlackConnection.length > 0) {
-            const slackMessage = formatTrackingSlackMessage({
-                name: props.name,
-                trackingNumber: props.trackingNumber,
-                status: tracker.status,
-                estimatedDelivery: tracker.est_delivery_date,
-                trackingUrl: tracker.public_url,
-                latestUpdate: tracker.tracking_details[0].message
-            });
-            const url = tenantSlackConnection[0].data?.incoming_webhook.url;
-            if (!url) {
-                throw new Error("Slack connection not configured");
-            }
-            await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: slackMessage })
-            });
-        }
-
         // find slack connection for tenant
+        const tenantSlackConnection = await this.db.select().from(tenantTable).where(eq(tenantTable.teamId, this.tenant)).limit(1);
+        if (tenantSlackConnection.length <= 0) {
+            console.log(`No slack connection found for tenant: ${this.tenant}`);
+            throw new Error("Slack connection not configured"); // user visible message
+        }
+        
         // send message to slack
+        const slackMessage = formatTrackingSlackMessage({
+            name: props.name,
+            trackingNumber: props.trackingNumber,
+            status: tracker.status,
+            estimatedDelivery: tracker.est_delivery_date,
+            trackingUrl: tracker.public_url,
+            latestUpdate: tracker.tracking_details[0].message
+        });
+        const url = tenantSlackConnection[0].data?.incoming_webhook.url;
+        if (!url) {
+            console.log(`mising slack webhook url for tenant: ${this.tenant}`);
+            throw new Error("Slack connection not configured");
+        }
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: slackMessage })
+        });        
     }
 
     listPackages() {
