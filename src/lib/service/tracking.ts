@@ -41,6 +41,7 @@ export class TrackingService {
             console.log("Error creating tracker with easypost", tracker.error);
             throw new Error(tracker.error?.message);
         }
+        console.log("Tracker created", tracker);
 
         // store the update
         await this.db.insert(packagesTable).values({
