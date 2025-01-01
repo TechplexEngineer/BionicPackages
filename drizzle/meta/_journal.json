@@ -5,22 +5,29 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1735070106474,
-      "tag": "0000_bored_cloak",
+      "when": 1735326813819,
+      "tag": "0000_login-user-and-session",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1735125535347,
-      "tag": "0001_nosy_mercury",
+      "when": 1735326852124,
+      "tag": "0001_packages",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "6",
-      "when": 1735126413844,
-      "tag": "0002_illegal_blue_blade",
+      "when": 1735326876700,
+      "tag": "0002_tenant",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1735327989524,
+      "tag": "0003_tenant-with-id",
       "breakpoints": true
     }
   ]

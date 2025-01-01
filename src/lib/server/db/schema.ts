@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm/sql';
 import { sqliteTable, text, integer, } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
@@ -8,14 +9,31 @@ export const user = sqliteTable('user', {
 });
 export type User = typeof user.$inferSelect;
 
-export const session = sqliteTable('session', {
+export const sessionTable = sqliteTable('session', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
-export type Session = typeof session.$inferSelect;
+export type Session = typeof sessionTable.$inferSelect;
+
+export type trackingData = {
+	status: string,
+	estimatedDelivery: Date,
+	trackingUrl: string,
+	latestUpdate: string
+};
+
+export const packagesTable = sqliteTable('packages', {
+	id: integer('id').primaryKey(),
+	trackingNumber: text('trackingNumber'),
+	name: text('name'),
+	carrier: text('carrier'),
+	tenant: text('tenant'),
+	tracking: text('tracking', { mode: 'json' }).$type<trackingData>()
+});
+export type Packages = typeof packagesTable.$inferSelect;
 
 export type slackConData = {
 	ok: boolean
@@ -41,27 +59,12 @@ export type slackConData = {
 	}
 }
 
-
-export const slackConnections = sqliteTable('slackcon', {
+export const tenantTable = sqliteTable('tenant', {
 	id: integer('id').primaryKey(),
-	// teamId: text('teamId'), // make this a virtual (generated) column
+	teamId: text('teamId').generatedAlwaysAs(sql`json_extract(data, '$.team.id')`), // make this a virtual (generated) column
 	data: text('data', { mode: 'json' }).$type<slackConData>()
 });
-export type SlackConnections = typeof slackConnections.$inferSelect;
+export type Tenant = typeof tenantTable.$inferSelect;
 
-export type trackingData = {
-	status: string,
-	estimatedDelivery: Date,
-	trackingUrl: string,
-	latestUpdate: string
-};
 
-export const packagesTable = sqliteTable('packages', {
-	id: integer('id').primaryKey(),
-	trackingNumber: text('trackingNumber'),
-	name: text('name'),
-	carrier: text('carrier'),
-	tenant: text('tenant'),
-	tracking: text('tracking', { mode: 'json' }).$type<trackingData>()
-});
-export type Packages = typeof slackConnections.$inferSelect;
+

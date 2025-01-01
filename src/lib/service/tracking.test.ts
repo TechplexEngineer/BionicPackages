@@ -7,23 +7,24 @@ import * as fs from 'fs/promises';
 import { packagesTable } from '$lib/server/db/schema';
 import { eq, lt, gte, ne, and } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/libsql/migrator';
+import config from '../../../drizzle.config';
 
 describe('TrackingService', () => {
     let trackingService: TrackingService;
     let mockDb: LibSQLDatabase<Record<string, never>>
     const mockDbPath = 'test.db';
-    const tenant = 'testTenant';
+    const tennant = 'testTenant';
 
     beforeEach(async () => {
         const client = createClient({ url: `file:${mockDbPath}` });
         mockDb = drizzle_libsql(client);
         await migrate(mockDb, {
             migrationsFolder: "./drizzle",
-            migrationsSchema: './src/lib/server/db/schema.ts',
-            migrationsTable: "__drizzle_migrations",
+            migrationsSchema: config.migrations?.schema,
+            migrationsTable: config.migrations?.table
 
         });
-        trackingService = new TrackingService(mockDb, tenant);
+        trackingService = new TrackingService(mockDb, tennant);
     });
     afterEach(async () => {
         vi.restoreAllMocks();
@@ -43,7 +44,7 @@ describe('TrackingService', () => {
         const res = await mockDb.select().from(packagesTable).where(and(
             eq(packagesTable.name, packageProps.name),
             eq(packagesTable.trackingNumber, packageProps.trackingNumber),
-            eq(packagesTable.tenant, tenant),
+            eq(packagesTable.tennant, tennant),
             eq(packagesTable.carrier, packageProps.carrier)
         ))
         expect(res).toHaveLength(1);
@@ -73,7 +74,7 @@ describe('TrackingService', () => {
         const trackingNumber = '123456';
         const event = {
             status: 'In Transit',
-            estimatedDelivery: new Date('2023-10-10'),
+            estimatedDelivery: '2023-10-10',
             trackingUrl: 'http://example.com/track/123456',
             latestUpdate: 'Package has left the facility'
         };

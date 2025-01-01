@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "bf355433-da89-48df-b93a-82998658b10c",
-  "prevId": "0bd87673-03d0-4da2-b380-aa844e38f140",
+  "id": "18ae15d6-8e08-4205-a881-8483b8a5d1d8",
+  "prevId": "ae1321de-ac1d-4a8a-833c-ceb26ef70b22",
   "tables": {
     "packages": {
       "name": "packages",
@@ -96,6 +96,36 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "tenant": {
+      "name": "tenant",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "teamId": {
+          "name": "teamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "data": {
+          "name": "data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

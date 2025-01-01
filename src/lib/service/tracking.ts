@@ -1,10 +1,10 @@
 import { EasyPost } from "$lib/easypost";
 import type { Database } from "$lib/server/db";
-import { packagesTable, slackConnections } from "$lib/server/db/schema";
+import { packagesTable, tenantTable } from "$lib/server/db/schema";
 import { eq, lt, gte, ne, and } from 'drizzle-orm';
 import { EASYPOST_API_KEY } from '$env/static/private';
 
-export type TrackingEvent = { 
+export type TrackingEvent = {
     trackingNumber: string,
     status: string,
     estimatedDelivery: Date,
@@ -58,7 +58,7 @@ export class TrackingService {
 
 
         // Send an update to slack
-        const tenantSlackConnection = await this.db.select().from(slackConnections).where(eq('tenant', this.tenant)).limit(1);
+        const tenantSlackConnection = await this.db.select().from(tenantTable).where(eq(tenantTable.teamId, this.tenant)).limit(1);
         if (tenantSlackConnection.length > 0) {
             const slackMessage = formatTrackingSlackMessage({
                 name: props.name,
@@ -68,14 +68,17 @@ export class TrackingService {
                 trackingUrl: tracker.public_url,
                 latestUpdate: tracker.tracking_details[0].message
             });
-
-            await fetch(tenantSlackConnection[0].webhookUrl, {
+            const url = tenantSlackConnection[0].data?.incoming_webhook.url;
+            if (!url) {
+                throw new Error("Slack connection not configured");
+            }
+            await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: slackMessage })
             });
         }
-        
+
         // find slack connection for tenant
         // send message to slack
     }
@@ -85,7 +88,7 @@ export class TrackingService {
     }
 }
 
-export const formatTrackingSlackMessage = (t: TrackingEvent & {name: string}) => {
+export const formatTrackingSlackMessage = (t: TrackingEvent & { name: string }) => {
     let deliveryDate = "";
     if (deliveryDate) {
         deliveryDate = new Date(t.estimatedDelivery).toLocaleString('en-us', {
@@ -95,35 +98,35 @@ export const formatTrackingSlackMessage = (t: TrackingEvent & {name: string}) =>
         deliveryDate = "Unknown"
     }
     const blocks = [
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": `*${t.name}*\n ${genStatusIndicator(t.status)} ${t.status}\n Estimated Delivery: ${deliveryDate}\n Last Update: ${t.latestUpdate}`
-                }
-            },
-            {
-                "type": "actions",
-                "elements": [
-                    {
-                        "type": "button",
-                        "text": {
-                            "type": "plain_text",
-                            "text": `Track`, // ${t.carrier} ${t.tracking}
-                            "emoji": true
-                        },
-                        "url": t.trackingUrl
-                    }
-                ]
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": `*${t.name}*\n ${genStatusIndicator(t.status)} ${t.status}\n Estimated Delivery: ${deliveryDate}\n Last Update: ${t.latestUpdate}`
             }
-        ]
-    
+        },
+        {
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": `Track`, // ${t.carrier} ${t.tracking}
+                        "emoji": true
+                    },
+                    "url": t.trackingUrl
+                }
+            ]
+        }
+    ]
+
 
     return JSON.stringify(blocks);
 }
 
 const genStatusIndicator = (status: string): string => {
-    switch(status) {
+    switch (status) {
         case "pre_transit":
             return `:large_green_circle::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
         case "in_transit":

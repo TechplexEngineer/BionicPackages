@@ -13,7 +13,7 @@ export const getDb = async (platform: App.Platform) => {
     if (!platform.env?.bionic_packages_db) {
         throw new Error("database binding not set: 'bionic_packages_db'")
     }
-    return drizzle_d1(platform.env?.bionic_packages_db)
+    return drizzle_d1(platform.env?.bionic_packages_db as any)
 
     // if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
     // const client = createClient({ url: env.DATABASE_URL });

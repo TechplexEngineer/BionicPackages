@@ -1,39 +1,9 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "89d88940-d187-4462-95fc-d0a8fb4bda79",
+  "id": "0bd87673-03d0-4da2-b380-aa844e38f140",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "packages": {
-      "name": "packages",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "trackingNumber": {
-          "name": "trackingNumber",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "data": {
-          "name": "data",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "session": {
       "name": "session",
       "columns": {
@@ -75,29 +45,6 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "slackcon": {
-      "name": "slackcon",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "data": {
-          "name": "data",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

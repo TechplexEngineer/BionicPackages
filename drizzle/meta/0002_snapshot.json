@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d026ff72-0c0d-461e-97a9-6ac7e4361106",
-  "prevId": "36f08201-e328-49c8-8b06-300d2684ebf7",
+  "id": "ae1321de-ac1d-4a8a-833c-ceb26ef70b22",
+  "prevId": "bf355433-da89-48df-b93a-82998658b10c",
   "tables": {
     "packages": {
       "name": "packages",
@@ -99,8 +99,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "slackcon": {
-      "name": "slackcon",
+    "tenant": {
+      "name": "tenant",
       "columns": {
         "id": {
           "name": "id",
