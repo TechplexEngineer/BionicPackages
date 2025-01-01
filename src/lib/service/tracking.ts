@@ -34,9 +34,11 @@ export class TrackingService {
     async addPackage(props: { name: string, trackingNumber: string, carrier: string }) {
 
         // Create a tracker with easypost
+        console.log("Creating tracker with easypost");
         const ep = new EasyPost(EASYPOST_API_KEY);
         const tracker = await ep.Tracker.create(props.trackingNumber, props.carrier);
         if ('error' in tracker) {
+            console.log("Error creating tracker with easypost", tracker.error);
             throw new Error(tracker.error?.message);
         }
 
@@ -53,6 +55,7 @@ export class TrackingService {
                 latestUpdate: tracker.tracking_details[0].message,
             }
         });
+        console.log("Package added to database");
 
         // check if the webhook is redundant
 
@@ -63,6 +66,7 @@ export class TrackingService {
             console.log(`No slack connection found for tenant: ${this.tenant}`);
             throw new Error("Slack connection not configured"); // user visible message
         }
+        console.log("Slack connection found");
         
         // send message to slack
         const slackMessage = formatTrackingSlackMessage({
@@ -78,6 +82,7 @@ export class TrackingService {
             console.log(`mising slack webhook url for tenant: ${this.tenant}`);
             throw new Error("Slack connection not configured");
         }
+        console.log("Sending message to slack");
         await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
