@@ -16,7 +16,7 @@ class EasyPostTracker {
                 carrier: carrier
             }
         }
-
+        console.log("pre-create");
         const response = await fetch(this.trackerEndpoint, {
             method: "POST",
             body: JSON.stringify(body),
@@ -25,6 +25,7 @@ class EasyPostTracker {
                 "Content-Type": "application/json"
             },
         });
+        console.log("post create");
         return await response.json<EasyPostTrackerCreateResponse>();
     }
 
