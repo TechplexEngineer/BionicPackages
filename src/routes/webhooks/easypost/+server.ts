@@ -2,7 +2,7 @@ import type { EasyPostWebhook } from '$lib/easypost/WebhookResponse';
 import { TrackingService } from '$lib/service/tracking';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ locals, request }) => {
+export const POST: RequestHandler = async ({ locals, request }) => {
     const r = await request.json<EasyPostWebhook>();
 
     const tenant = "";
