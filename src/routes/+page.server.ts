@@ -30,7 +30,7 @@ export const actions: Actions = {
         const svc = new TrackingService(locals.db, "T091KQ231");//@todo get from session
         console.log("Tracking Service Created");
 
-        svc.addPackage({ name: name, trackingNumber: tracking, carrier: carrier });
+        await svc.addPackage({ name: name, trackingNumber: tracking, carrier: carrier });
         console.log("Added package", name, tracking, carrier);
     },
 };

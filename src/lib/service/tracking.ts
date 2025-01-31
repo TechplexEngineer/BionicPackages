@@ -3,7 +3,6 @@ import type { Database } from "$lib/server/db";
 import { packagesTable, tenantTable } from "$lib/server/db/schema";
 import { eq, lt, gte, ne, and } from 'drizzle-orm';
 import { EASYPOST_API_KEY } from '$env/static/private';
-import type { EasyPostTrackerCreateResponse } from "$lib/easypost/TrackerCreateResponse";
 
 export type TrackingEvent = {
     trackingNumber: string,
@@ -37,32 +36,6 @@ export class TrackingService {
         try {
             // Create a tracker with easypost
             console.log("Creating tracker with easypost");
-            const trackerEndpoint = "https://api.easypost.com/v2/trackers";
-
-
-            console.log("pre-create", trackerEndpoint);
-            const body = {
-                tracker: {
-                    tracking_code: props.trackingNumber,
-                    carrier: props.carrier
-                }
-            }
-            try {
-                const response = await fetch(trackerEndpoint, {
-                    method: "POST",
-                    body: JSON.stringify(body),
-                    headers: {
-                        Authorization: "Basic " + btoa(EASYPOST_API_KEY),
-                        "Content-Type": "application/json"
-                    },
-                });
-                
-                console.log("post create");
-                const res = await response.json<EasyPostTrackerCreateResponse>();
-                console.log("response", res)
-                return res;
-            } catch(e) {console.log(e)}
-
             const ep = new EasyPost(EASYPOST_API_KEY);
             const tracker = await ep.Tracker.create(props.trackingNumber, props.carrier);
             if ('error' in tracker) {
