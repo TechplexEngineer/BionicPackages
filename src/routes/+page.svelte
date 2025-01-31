@@ -29,8 +29,8 @@
 				</div>
 				<div class="mb-3 col-4">
 					<label for="carrierField" class="form-label">Carrier</label>
-					<select class="form-control" id="carrierField" name="carrier" required>
-						<option disabled selected hidden="" value="-1">-- Choose a carrier --</option>
+					<select class="form-control" id="carrierField" name="carrier">
+						<option disabled selected hidden="" value="-1">-- Autodetect Carrier --</option>
 						<optgroup label="Common">
 							<option value="USPS">USPS</option>
 							<option value="FedEx">FedEx</option>

@@ -9,7 +9,7 @@ class EasyPostTracker {
         this.apiKey = easyPostApiToken;
     }
 
-    async create(tracking_code: string, carrier: string): Promise<EasyPostTrackerCreateResponse & EasyPostErrorResponse> {
+    async create(tracking_code: string, carrier?: string): Promise<EasyPostTrackerCreateResponse & EasyPostErrorResponse> {
         const body = {
             tracker: {
                 tracking_code: tracking_code,
@@ -17,21 +17,21 @@ class EasyPostTracker {
             }
         }
         console.log("pre-create", this.trackerEndpoint);
-        try {
-            const response = await fetch(this.trackerEndpoint, {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: {
-                    Authorization: "Basic " + btoa(this.apiKey),
-                    "Content-Type": "application/json"
-                },
-            });
-            
-            console.log("post create");
-            const res = await response.json<EasyPostTrackerCreateResponse>();
-            console.log("response", res)
-            return res;
-        } catch(e) {console.log(e)}
+
+        const response = await fetch(this.trackerEndpoint, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                Authorization: "Basic " + btoa(this.apiKey),
+                "Content-Type": "application/json"
+            },
+        });
+        
+        console.log("post create");
+        const res = await response.json<EasyPostTrackerCreateResponse>();
+        console.log("response", res)
+        return res;
+    
     }
 
     async list(): Promise<EasyPostTrackerListResponse> {

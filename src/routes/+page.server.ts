@@ -22,7 +22,7 @@ export const actions: Actions = {
         const tracking = data.get('tracking')?.toString();
         const carrier = data.get('carrier')?.toString();
 
-        if (!name || !tracking || !carrier) {
+        if (!name || !tracking) {
             console.log("Missing required fields");
             return fail(400, { message: "Missing required fields" });
         }

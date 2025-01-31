@@ -31,7 +31,7 @@ export class TrackingService {
         ));
     }
 
-    async addPackage(props: { name: string, trackingNumber: string, carrier: string }) {
+    async addPackage(props: { name: string, trackingNumber: string, carrier?: string }) {
 
         try {
             // Create a tracker with easypost
