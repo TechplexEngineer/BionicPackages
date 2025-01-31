@@ -6,6 +6,8 @@
 	import { enhance } from '$app/forms';
 
 	let { data }: { data: PageData } = $props();
+
+	console.log("pageData",data);
 </script>
 
 <div class="container">
@@ -129,7 +131,7 @@
 				<th>Status</th>
 				<th>Est. Delivery</th>
 				<th>Tracking</th>
-				<th>Carrier</th>
+				<!-- <th>Carrier</th> -->
 				<th></th>
 			</tr>
 		</thead>
@@ -137,15 +139,15 @@
 			{#each data.packages as pkg}
 				<tr>
 					<td>{pkg.name}</td>
-					<td>{pkg.status}</td>
-					<td>{pkg.estDelivery}</td>
-					<td><a href={pkg.trackingUrl}>{pkg.trackingNumber}</a></td>
-					<td>{pkg.carrier}</td>
+					<td>{pkg}</td>
+					<td>{pkg.tracking?.estimatedDelivery}</td>
+					<td><a href={pkg.tracking?.trackingUrl}>{pkg.trackingNumber}</a></td>
+					<!-- <td>{pkg.carrier}</td> -->
 					<td></td>
 				</tr>
 			{:else}
 				<tr>
-					<td colspan="6">No packages found</td>
+					<td colspan="5">No packages found</td>
 				</tr>
 			{/each}
 		</tbody>
