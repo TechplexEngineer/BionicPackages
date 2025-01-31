@@ -16,6 +16,11 @@ declare global {
 				EASYPOST_API_KEY: string;
 			}
 		}
+		interface PageData {
+			flash?: { type: 'info' | 'success' | 'warning' | 'error'; message: string };
+		}
+		// interface Error {}
+		// interface PageState {}
 	}
 }
 

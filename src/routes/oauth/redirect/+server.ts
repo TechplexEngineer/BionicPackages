@@ -2,7 +2,8 @@ import { tenantTable, type slackConData } from '$lib/server/db/schema';
 import { getSlackAPIURL } from '$lib/slack';
 import type { RequestHandler } from './$types';
 import { SLACK_CLIENT_ID, SLACK_CLIENT_SECRET } from '$env/static/private';
-import { redirect } from '@sveltejs/kit';
+import { redirect } from 'sveltekit-flash-message/server'
+
 
 const clientId = SLACK_CLIENT_ID;
 if (!clientId) {
@@ -15,7 +16,7 @@ if (!clientSecret) {
 }
 
 
-export const GET: RequestHandler = async ({ request, locals }) => {
+export const GET: RequestHandler = async ({ request, locals, cookies }) => {
     try {
         console.log("oauth/redirect/+server.ts GET");
         console.log("url", request.url);
@@ -39,6 +40,10 @@ export const GET: RequestHandler = async ({ request, locals }) => {
         const data: slackConData = await response.json();
         console.log("Slack API response", data);
 
+        if (!data.ok) {
+            return new Response("FAILED");
+        }
+
         await locals.db.insert(tenantTable).values({ data: data })
 
     } catch (e) {
@@ -46,6 +51,13 @@ export const GET: RequestHandler = async ({ request, locals }) => {
     }
 
     // return new Response("Success"); // this is shown to the user after installing the app
-    throw redirect(302, '/');
+    return redirect(
+        "/",
+        {
+            type: "success",
+            message: "Successfully installed the app"
+        },
+        cookies
+    )
     // Redirect to home screen and show a message that the app was installed
 };
