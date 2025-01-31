@@ -17,20 +17,19 @@ class EasyPostTracker {
             }
         }
         console.log("pre-create");
-        try {
-            const response = await fetch(this.trackerEndpoint, {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: {
-                    Authorization: "Basic " + btoa(this.apiKey),
-                    "Content-Type": "application/json"
-                },
-            });
-        } catch(e){
-            console.log("Error creating tracker", e)
-        }
+        const response = await fetch(this.trackerEndpoint, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                Authorization: "Basic " + btoa(this.apiKey),
+                "Content-Type": "application/json"
+            },
+        });
+        
         console.log("post create");
-        return await response.json<EasyPostTrackerCreateResponse>();
+        const res = await response.json<EasyPostTrackerCreateResponse>();
+        console.log("response", res)
+        return res;
     }
 
     async list(): Promise<EasyPostTrackerListResponse> {
