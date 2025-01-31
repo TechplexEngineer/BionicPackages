@@ -1,1 +1,1 @@
-ALTER TABLE `tenant` ADD `teamId` text;
+ALTER TABLE `tenant` ADD `teamId` text GENERATED ALWAYS AS (json_extract(data, '$.team.id')) VIRTUAL;

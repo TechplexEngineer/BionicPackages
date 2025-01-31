@@ -44,6 +44,7 @@ export const GET: RequestHandler = async ({ request, locals }) => {
         return new Response("FAILED");
     }
 
-    return new Response("Success"); // this is shown to the user after installing the app
+    // return new Response("Success"); // this is shown to the user after installing the app
+    return Response.redirect('/');
     // Redirect to home screen and show a message that the app was installed
 };
